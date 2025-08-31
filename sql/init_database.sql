@@ -6,7 +6,7 @@ Script Purpose:
     This script creates a new database named 'BikeShareDB' after checking if it already exists. 
     If the database exists, it is dropped and recreated. Additionally, the script sets up three schemas 
     within the database: 'bronze', 'silver', and 'gold'.
-	
+
 WARNING:
     Running this script will drop the entire 'BikeShareDB' database if it exists. 
     All data in the database will be permanently deleted. Proceed with caution 
@@ -16,7 +16,7 @@ WARNING:
 USE master;
 GO
 
--- Drop and recreate the 'BikeShareDB' database
+-- Drop the 'BikeShareDB' database if it exists
 IF EXISTS (SELECT 1 FROM sys.databases WHERE name = 'BikeShareDB')
 BEGIN
     ALTER DATABASE BikeShareDB SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
@@ -28,15 +28,19 @@ GO
 CREATE DATABASE BikeShareDB;
 GO
 
+-- Switch context to the new database
 USE BikeShareDB;
 GO
 
--- Create Schemas
-CREATE SCHEMA bronze;
+-- Create Schemas (if not already existing)
+IF NOT EXISTS (SELECT 1 FROM sys.schemas WHERE name = 'bronze')
+    EXEC('CREATE SCHEMA bronze');
 GO
 
-CREATE SCHEMA silver;
+IF NOT EXISTS (SELECT 1 FROM sys.schemas WHERE name = 'silver')
+    EXEC('CREATE SCHEMA silver');
 GO
 
-CREATE SCHEMA gold;
+IF NOT EXISTS (SELECT 1 FROM sys.schemas WHERE name = 'gold')
+    EXEC('CREATE SCHEMA gold');
 GO
