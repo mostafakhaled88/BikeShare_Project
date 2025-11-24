@@ -44,3 +44,5 @@ GO
 IF NOT EXISTS (SELECT 1 FROM sys.schemas WHERE name = 'gold')
     EXEC('CREATE SCHEMA gold');
 GO
+IF NOT EXISTS (SELECT 1 FROM sys.schemas WHERE name = 'audit')
+    EXEC('CREATE SCHEMA audit');
