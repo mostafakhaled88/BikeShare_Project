@@ -78,15 +78,21 @@ END;
 GO
 
 -- ==========================================
--- Optional: Load Audit Table
+-- Load Audit Table
 -- ==========================================
-IF OBJECT_ID('bronze.load_audit','U') IS NULL
+IF OBJECT_ID('audit.audit.etl_log','U') IS NULL
 BEGIN
-    CREATE TABLE bronze.load_audit (
-        table_name NVARCHAR(128),
-        load_time  DATETIME,
-        rows_loaded INT
-    );
+   CREATE TABLE audit.etl_log (
+    log_id INT IDENTITY PRIMARY KEY,
+    process_name NVARCHAR(100),
+    table_name NVARCHAR(100),
+    file_path NVARCHAR(400),
+    start_time DATETIME,
+    end_time DATETIME,
+    rows_loaded INT,
+    status NVARCHAR(20),
+    error_message NVARCHAR(MAX)
+);
 END;
 GO
 
